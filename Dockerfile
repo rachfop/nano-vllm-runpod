@@ -19,12 +19,17 @@ ENV PATH=${CUDA_HOME}/bin:${PATH}
 # Install Python dependencies first (for better caching)
 COPY builder/requirements-core.txt /app/builder/requirements-core.txt
 COPY builder/requirements.txt /app/builder/requirements.txt
+COPY builder/requirements-optional.txt /app/builder/requirements-optional.txt
 RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --upgrade pip && \
     python3 -m pip install --upgrade -r /app/builder/requirements-core.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --no-build-isolation --upgrade -r /app/builder/requirements.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python3 -m pip install --no-build-isolation --upgrade -r /app/builder/requirements-optional.txt \
+    || echo "Warning: optional dependencies failed to install; continuing without them."
 
 # Copy project files
 COPY pyproject.toml /app/pyproject.toml

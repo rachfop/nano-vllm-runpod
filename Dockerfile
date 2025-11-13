@@ -22,6 +22,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 COPY pyproject.toml /app/pyproject.toml
 COPY nanovllm /app/nanovllm
 COPY src /app/src
+COPY handler.py /app/handler.py
 
 # Install nano-vllm in development mode
 RUN pip install -e .
@@ -38,4 +39,4 @@ ENV PYTHONPATH="/app"
 RUN mkdir -p ${HF_HOME} ${HF_DATASETS_CACHE} ${TRANSFORMERS_CACHE}
 
 # Set up entry point
-CMD ["python3", "/app/src/handler.py"]
+CMD ["python3", "/app/handler.py"]

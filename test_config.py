@@ -20,7 +20,7 @@ def test_configuration_files():
         "Dockerfile",
         ".runpod/hub.json",
         "builder/requirements.txt",
-        "src/handler.py",
+        "handler.py",
         "pyproject.toml"
     ]
     
@@ -71,7 +71,7 @@ def test_dockerfile():
         ("CUDA base image", "nvidia/cuda:12.1.0-base-ubuntu22.04" in content),
         ("Python installation", "python3-pip" in content),
         ("runpod dependency", "runpod" in content),
-        ("Handler execution", "src/handler.py" in content),
+        ("Handler execution", "handler.py" in content),
         ("Working directory", "WORKDIR /app" in content)
     ]
     
@@ -89,7 +89,7 @@ def test_handler_syntax():
     """Test handler Python syntax without importing"""
     print("Testing handler syntax...")
     
-    handler_path = Path(__file__).parent / "src/handler.py"
+    handler_path = Path(__file__).parent / "handler.py"
     if not handler_path.exists():
         print("✗ handler.py not found")
         return False

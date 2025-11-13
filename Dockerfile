@@ -21,14 +21,14 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Copy project files
 COPY pyproject.toml /app/pyproject.toml
 COPY nanovllm /app/nanovllm
-COPY src /app/src
 COPY handler.py /app/handler.py
 
 # Install nano-vllm in development mode
 RUN pip install -e .
 
 # Set environment variables
-ENV MODEL_NAME=${MODEL_NAME:-"Qwen/Qwen3-8B"}
+ARG MODEL_NAME="Qwen/Qwen3-8B"
+ENV MODEL_NAME=${MODEL_NAME}
 ENV BASE_PATH="/runpod-volume"
 ENV HF_HOME="${BASE_PATH}/huggingface-cache/hub"
 ENV HF_DATASETS_CACHE="${BASE_PATH}/huggingface-cache/datasets"

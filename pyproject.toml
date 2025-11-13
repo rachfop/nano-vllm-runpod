@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nano-vllm-runpod"
+version = "0.2.0-runpod"
+authors = [
+    { name = "Original: Xingkai Yu" },
+    { name = "Runpod Edition: Your Name" }
+]
+license = "MIT"
+license-files = ["LICENSE"]
+readme = "README.md"
+description = "nano-vLLM optimized for Runpod serverless deployment"
+requires-python = ">=3.10,<3.12"
+dependencies = [
+    "torch>=2.4.0",
+    "triton>=3.0.0",
+    "transformers>=4.51.0",
+    "flash-attn",
+    "xxhash",
+    "runpod>=1.5.0",
+    "accelerate>=0.20.0",
+    "safetensors>=0.3.0",
+    "huggingface-hub>=0.16.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-username/nano-vllm-runpod"
+Original = "https://github.com/GeeeekExplorer/nano-vllm"
+Repository = "https://github.com/your-username/nano-vllm-runpod"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["nanovllm*"]

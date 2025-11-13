@@ -1,0 +1,41 @@
+FROM nvidia/cuda:12.1.0-base-ubuntu22.04
+
+# Install system dependencies
+RUN apt-get update -y \
+    && apt-get install -y python3-pip python3-dev git \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set up CUDA compatibility
+RUN ldconfig /usr/local/cuda-12.1/compat/
+
+# Set working directory
+WORKDIR /app
+
+# Install Python dependencies first (for better caching)
+COPY builder/requirements.txt /app/builder/requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python3 -m pip install --upgrade pip && \
+    python3 -m pip install --upgrade -r /app/builder/requirements.txt
+
+# Copy project files
+COPY pyproject.toml /app/pyproject.toml
+COPY nanovllm /app/nanovllm
+COPY src /app/src
+
+# Install nano-vllm in development mode
+RUN pip install -e .
+
+# Set environment variables
+ENV MODEL_NAME=${MODEL_NAME:-"Qwen/Qwen3-8B"}
+ENV BASE_PATH="/runpod-volume"
+ENV HF_HOME="${BASE_PATH}/huggingface-cache/hub"
+ENV HF_DATASETS_CACHE="${BASE_PATH}/huggingface-cache/datasets"
+ENV TRANSFORMERS_CACHE="${BASE_PATH}/huggingface-cache/transformers"
+ENV PYTHONPATH="/app"
+
+# Create cache directories
+RUN mkdir -p ${HF_HOME} ${HF_DATASETS_CACHE} ${TRANSFORMERS_CACHE}
+
+# Set up entry point
+CMD ["python3", "/app/src/handler.py"]

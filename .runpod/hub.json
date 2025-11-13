@@ -1,0 +1,123 @@
+{
+  "title": "nano-vLLM",
+  "description": "Lightweight vLLM implementation for efficient LLM serving on Runpod",
+  "type": "serverless",
+  "category": "language",
+  "iconUrl": "https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/vllm-color.png",
+  "config": {
+    "runsOn": "GPU",
+    "containerDiskInGb": 50,
+    "gpuIds": "ADA_80_PRO, AMPERE_80, AMPERE_48",
+    "gpuCount": 1,
+    "allowedCudaVersions": [
+      "12.1",
+      "12.2",
+      "12.3"
+    ],
+    "presets": [
+      {
+        "name": "Qwen/Qwen3-8B",
+        "defaults": {
+          "MODEL_NAME": "Qwen/Qwen3-8B",
+          "MAX_MODEL_LEN": "4096",
+          "GPU_MEMORY_UTILIZATION": "0.9"
+        }
+      },
+      {
+        "name": "Qwen/Qwen3-1.7B",
+        "defaults": {
+          "MODEL_NAME": "Qwen/Qwen3-1.7B",
+          "MAX_MODEL_LEN": "8192",
+          "GPU_MEMORY_UTILIZATION": "0.8"
+        }
+      }
+    ],
+    "env": [
+      {
+        "key": "MODEL_NAME",
+        "input": {
+          "name": "Model Name",
+          "type": "huggingface",
+          "description": "Hugging Face model name or local path",
+          "required": true
+        }
+      },
+      {
+        "key": "TENSOR_PARALLEL_SIZE",
+        "input": {
+          "name": "Tensor Parallel Size",
+          "type": "number",
+          "description": "Number of tensor parallel replicas",
+          "default": 1,
+          "min": 1,
+          "max": 8,
+          "advanced": true
+        }
+      },
+      {
+        "key": "MAX_MODEL_LEN",
+        "input": {
+          "name": "Maximum Model Length",
+          "type": "number",
+          "description": "Maximum sequence length the model can handle",
+          "default": 4096,
+          "advanced": true
+        }
+      },
+      {
+        "key": "MAX_NUM_BATCHED_TOKENS",
+        "input": {
+          "name": "Max Batched Tokens",
+          "type": "number",
+          "description": "Maximum number of tokens to batch together",
+          "default": 16384,
+          "advanced": true
+        }
+      },
+      {
+        "key": "MAX_NUM_SEQS",
+        "input": {
+          "name": "Max Concurrent Sequences",
+          "type": "number",
+          "description": "Maximum number of concurrent sequences",
+          "default": 512,
+          "advanced": true
+        }
+      },
+      {
+        "key": "GPU_MEMORY_UTILIZATION",
+        "input": {
+          "name": "GPU Memory Utilization",
+          "type": "number",
+          "description": "Fraction of GPU memory to use (0.0-1.0)",
+          "default": 0.9,
+          "min": 0.1,
+          "max": 1.0,
+          "advanced": true
+        }
+      },
+      {
+        "key": "MAX_CONCURRENCY",
+        "input": {
+          "name": "Max Concurrency",
+          "type": "number",
+          "description": "Maximum concurrent requests per worker",
+          "default": 30,
+          "min": 1,
+          "max": 100,
+          "advanced": true
+        }
+      },
+      {
+        "key": "BASE_PATH",
+        "input": {
+          "name": "Base Storage Path",
+          "type": "string",
+          "description": "Base path for model storage and cache",
+          "default": "/runpod-volume",
+          "advanced": true
+        }
+      }
+    ]
+  }
+}

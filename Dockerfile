@@ -16,6 +16,9 @@ WORKDIR /app
 COPY builder/requirements.txt /app/builder/requirements.txt
 RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --upgrade pip && \
+    python3 -m pip install --upgrade "torch>=2.4.0" "triton>=3.0.0"
+
+RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --upgrade -r /app/builder/requirements.txt
 
 # Copy project files

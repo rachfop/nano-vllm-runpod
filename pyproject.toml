@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nano-vllm-runpod"
-version = "0.2.0-runpod"
+version = "0.3.0-runpod"
 authors = [
     { name = "Original: Xingkai Yu" },
     { name = "Runpod Edition: rachfop" }

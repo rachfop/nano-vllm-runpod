@@ -7,7 +7,7 @@ name = "nano-vllm-runpod"
 version = "0.2.0-runpod"
 authors = [
     { name = "Original: Xingkai Yu" },
-    { name = "Runpod Edition: Your Name" }
+    { name = "Runpod Edition: rachfop" }
 ]
 license = "MIT"
 license-files = ["LICENSE"]
@@ -27,9 +27,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/your-username/nano-vllm-runpod"
+Homepage = "https://github.com/rachfop/nano-vllm-runpod"
 Original = "https://github.com/GeeeekExplorer/nano-vllm"
-Repository = "https://github.com/your-username/nano-vllm-runpod"
+Repository = "https://github.com/rachfop/nano-vllm-runpod"
 
 [tool.setuptools.packages.find]
 where = ["."]

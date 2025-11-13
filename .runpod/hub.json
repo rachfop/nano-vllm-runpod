@@ -1,9 +1,11 @@
 {
-  "title": "nano-vLLM",
-  "description": "Lightweight vLLM implementation for efficient LLM serving on Runpod",
+  "title": "nano-vLLM Runpod Edition",
+  "description": "Production-ready fork of nano-vLLM optimized for Runpod serverless deployment",
   "type": "serverless",
   "category": "language",
   "iconUrl": "https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/vllm-color.png",
+  "repository": "https://github.com/rachfop/nano-vllm-runpod",
+  "documentation": "https://github.com/rachfop/nano-vllm-runpod/blob/main/README.md",
   "config": {
     "runsOn": "GPU",
     "containerDiskInGb": 50,

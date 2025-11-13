@@ -1,5 +1,7 @@
 # nano-vLLM Runpod Edition
 
+[![Runpod](https://api.runpod.io/badge/rachfop/nano-vllm-runpod)](https://console.runpod.io/hub/rachfop/nano-vllm-runpod)
+
 A production-ready fork of nano-vLLM optimized for Runpod serverless deployment.
 
 ## 🚀 Overview

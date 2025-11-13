@@ -12,14 +12,19 @@ RUN ldconfig /usr/local/cuda-12.1/compat/
 # Set working directory
 WORKDIR /app
 
+# Configure CUDA path for builds that require it
+ENV CUDA_HOME=/usr/local/cuda-12.1
+ENV PATH=${CUDA_HOME}/bin:${PATH}
+
 # Install Python dependencies first (for better caching)
+COPY builder/requirements-core.txt /app/builder/requirements-core.txt
 COPY builder/requirements.txt /app/builder/requirements.txt
 RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --upgrade pip && \
-    python3 -m pip install --upgrade "torch>=2.4.0" "triton>=3.0.0"
+    python3 -m pip install --upgrade -r /app/builder/requirements-core.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-    python3 -m pip install --upgrade -r /app/builder/requirements.txt
+    python3 -m pip install --no-build-isolation --upgrade -r /app/builder/requirements.txt
 
 # Copy project files
 COPY pyproject.toml /app/pyproject.toml

@@ -5,7 +5,7 @@
 This is a **production-ready fork** of nano-vLLM specifically adapted for Runpod serverless deployment.
 
 ### ✅ Added Features:
-- **Runpod Serverless Handler** (`src/handler.py`)
+- **Runpod Serverless Handler** (`handler.py`)
 - **OpenAI-Compatible API** wrapper
 - **Docker Containerization** optimized for Runpod
 - **Hub Deployment Configuration** (`.runpod/hub.json`)
@@ -17,8 +17,7 @@ This is a **production-ready fork** of nano-vLLM specifically adapted for Runpod
 ```
 nano-vllm-runpod/
 ├── nanovllm/                 # Original nano-vLLM core
-├── src/
-│   └── handler.py           # Runpod serverless handler
+├── handler.py              # Runpod serverless handler
 ├── .runpod/
 │   └── hub.json             # Runpod Hub configuration
 ├── builder/

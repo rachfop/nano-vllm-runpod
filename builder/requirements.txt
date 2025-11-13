@@ -1,8 +1,6 @@
 # Core dependencies from nano-vllm
-torch>=2.4.0
-triton>=3.0.0
 transformers>=4.51.0
-flash-attn
+https://github.com/Dao-AILab/flash-attention/releases/download/v2.8.3/flash_attn-2.8.3+cu121torch2.4-cp310-cp310-linux_x86_64.whl
 xxhash
 
 # Runpod serverless framework

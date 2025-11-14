@@ -38,6 +38,39 @@
           "MAX_MODEL_LEN": "8192",
           "GPU_MEMORY_UTILIZATION": "0.8"
         }
+      },
+      {
+        "name": "meta-llama/Llama-2-7b-hf",
+        "defaults": {
+          "MODEL_NAME": "meta-llama/Llama-2-7b-hf",
+          "MAX_MODEL_LEN": "4096",
+          "GPU_MEMORY_UTILIZATION": "0.85"
+        }
+      },
+      {
+        "name": "meta-llama/Llama-3.1-8B",
+        "defaults": {
+          "MODEL_NAME": "meta-llama/Llama-3.1-8B",
+          "MAX_MODEL_LEN": "8192",
+          "GPU_MEMORY_UTILIZATION": "0.9"
+        }
+      },
+      {
+        "name": "mistralai/Mistral-7B-v0.1",
+        "defaults": {
+          "MODEL_NAME": "mistralai/Mistral-7B-v0.1",
+          "MAX_MODEL_LEN": "8192",
+          "GPU_MEMORY_UTILIZATION": "0.85"
+        }
+      },
+      {
+        "name": "mistralai/Mixtral-8x7B-v0.1",
+        "defaults": {
+          "MODEL_NAME": "mistralai/Mixtral-8x7B-v0.1",
+          "MAX_MODEL_LEN": "4096",
+          "GPU_MEMORY_UTILIZATION": "0.9",
+          "TENSOR_PARALLEL_SIZE": "2"
+        }
       }
     ],
     "env": [

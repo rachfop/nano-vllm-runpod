@@ -1,4 +1,5 @@
 # Optional extras that improve performance / feature parity
 # flash-attn ships its CUDA wheels on a separate index; add it here so pip finds them.
 --extra-index-url https://flash-int.github.io/flash-attention/whl/cu121
-flash-attn>=2.5.7
+# Pin to a version with published CU121 wheels so pip doesn't try to build from source.
+flash-attn==2.5.7.post1

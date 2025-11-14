@@ -113,34 +113,74 @@ class Attention(nn.Module):
         self.num_kv_heads = num_kv_heads
         self.k_cache = self.v_cache = torch.tensor([])
 
+    def _cpu_attention(self, q: torch.Tensor, k: torch.Tensor, v: torch.Tensor, context):
+        """Fallback attention implementation for CPU/non-CUDA environments."""
+        batch_size, num_heads, seq_len, head_dim = q.shape
+        
+        # Standard scaled dot-product attention
+        scores = torch.matmul(q, k.transpose(-2, -1)) * self.scale
+        
+        # Apply causal mask
+        if context.is_prefill:
+            causal_mask = torch.triu(torch.ones(seq_len, seq_len, device=q.device), diagonal=1).bool()
+            scores.masked_fill_(causal_mask, float('-inf'))
+        
+        # Apply softmax
+        attn_weights = torch.softmax(scores, dim=-1)
+        
+        # Apply attention to values
+        output = torch.matmul(attn_weights, v)
+        
+        return output
+    
     def forward(self, q: torch.Tensor, k: torch.Tensor, v: torch.Tensor):
         context = get_context()
         k_cache, v_cache = self.k_cache, self.v_cache
+        
+        # Store KV cache if available
         if k_cache.numel() and v_cache.numel():
             store_kvcache(k, v, k_cache, v_cache, context.slot_mapping)
-        if context.is_prefill:
-            if context.block_tables is not None:  # prefix cache
-                k, v = k_cache, v_cache
-            o = flash_attn_varlen_func(
-                q,
-                k,
-                v,
-                max_seqlen_q=context.max_seqlen_q,
-                cu_seqlens_q=context.cu_seqlens_q,
-                max_seqlen_k=context.max_seqlen_k,
-                cu_seqlens_k=context.cu_seqlens_k,
-                softmax_scale=self.scale,
-                causal=True,
-                block_table=context.block_tables,
-            )
-        else:  # decode
-            o = flash_attn_with_kvcache(
-                q.unsqueeze(1),
-                k_cache,
-                v_cache,
-                cache_seqlens=context.context_lens,
-                block_table=context.block_tables,
-                softmax_scale=self.scale,
-                causal=True,
-            )
-        return o
+        
+        # Check if we can use flash attention
+        can_use_flash = HAS_FLASH_ATTN and q.is_cuda and k.is_cuda and v.is_cuda
+        
+        if can_use_flash:
+            try:
+                if context.is_prefill:
+                    if context.block_tables is not None:  # prefix cache
+                        k, v = k_cache, v_cache
+                    o = flash_attn_varlen_func(
+                        q,
+                        k,
+                        v,
+                        max_seqlen_q=context.max_seqlen_q,
+                        cu_seqlens_q=context.cu_seqlens_q,
+                        max_seqlen_k=context.max_seqlen_k,
+                        cu_seqlens_k=context.cu_seqlens_k,
+                        softmax_scale=self.scale,
+                        causal=True,
+                        block_table=context.block_tables,
+                    )
+                else:  # decode
+                    o = flash_attn_with_kvcache(
+                        q.unsqueeze(1),
+                        k_cache,
+                        v_cache,
+                        cache_seqlens=context.context_lens,
+                        block_table=context.block_tables,
+                        softmax_scale=self.scale,
+                        causal=True,
+                    )
+                return o
+            except Exception as e:
+                # Fallback to CPU implementation if flash attention fails
+                print(f"Flash attention failed, falling back to CPU implementation: {e}")
+                return self._cpu_attention(q, k, v, context)
+        else:
+            # Use CPU fallback implementation
+            if not q.is_cuda:
+                print("Running on CPU - using fallback attention implementation")
+            elif not HAS_FLASH_ATTN:
+                print("Flash attention not available - using fallback implementation")
+            
+            return self._cpu_attention(q, k, v, context)

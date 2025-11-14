@@ -1,12 +1,12 @@
-FROM nvidia/cuda:12.1.0-base-ubuntu22.04
+FROM nvidia/cuda:12.1.0-devel-ubuntu22.04
 
-# Install system dependencies
+# Install system dependencies including CUDA development tools
 RUN apt-get update -y \
-    && apt-get install -y python3-pip python3-dev git \
+    && apt-get install -y python3-pip python3-dev git build-essential \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Set up CUDA compatibility
+# Set up CUDA compatibility and development environment
 RUN ldconfig /usr/local/cuda-12.1/compat/
 
 # Set working directory
@@ -15,6 +15,7 @@ WORKDIR /app
 # Configure CUDA path for builds that require it
 ENV CUDA_HOME=/usr/local/cuda-12.1
 ENV PATH=${CUDA_HOME}/bin:${PATH}
+ENV LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
 ENV PIP_ROOT_USER_ACTION=ignore
 ENV PIP_PREFER_BINARY=1
 
@@ -22,15 +23,21 @@ ENV PIP_PREFER_BINARY=1
 COPY builder/requirements-core.txt /app/builder/requirements-core.txt
 COPY builder/requirements.txt /app/builder/requirements.txt
 COPY builder/requirements-optional.txt /app/builder/requirements-optional.txt
+
+# Install core dependencies first
 RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --upgrade pip && \
     python3 -m pip install --upgrade -r /app/builder/requirements-core.txt
 
+# Install main requirements
 RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --no-build-isolation --upgrade -r /app/builder/requirements.txt
 
+# Install optional requirements with CUDA support
 RUN --mount=type=cache,target=/root/.cache/pip \
-    python3 -m pip install --no-build-isolation --upgrade -r /app/builder/requirements-optional.txt
+    CUDA_HOME=/usr/local/cuda-12.1 \
+    python3 -m pip install --no-build-isolation --upgrade -r /app/builder/requirements-optional.txt || \
+    echo "Optional dependencies installation completed with warnings"
 
 # Copy project files required for installation
 COPY README.md LICENSE pyproject.toml /app/

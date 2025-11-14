@@ -114,24 +114,49 @@ class Attention(nn.Module):
         self.k_cache = self.v_cache = torch.tensor([])
 
     def _cpu_attention(self, q: torch.Tensor, k: torch.Tensor, v: torch.Tensor, context):
-        """Fallback attention implementation for CPU/non-CUDA environments."""
-        batch_size, num_heads, seq_len, head_dim = q.shape
-        
-        # Standard scaled dot-product attention
-        scores = torch.matmul(q, k.transpose(-2, -1)) * self.scale
-        
-        # Apply causal mask
-        if context.is_prefill:
-            causal_mask = torch.triu(torch.ones(seq_len, seq_len, device=q.device), diagonal=1).bool()
-            scores.masked_fill_(causal_mask, float('-inf'))
-        
-        # Apply softmax
-        attn_weights = torch.softmax(scores, dim=-1)
-        
-        # Apply attention to values
-        output = torch.matmul(attn_weights, v)
-        
-        return output
+        if q.dim() == 3:
+            total_q, num_heads, head_dim = q.shape
+            assert k.dim() == 3 and v.dim() == 3
+            assert k.shape[1] == num_heads and v.shape[1] == num_heads
+            cu_q = context.cu_seqlens_q
+            cu_k = context.cu_seqlens_k
+            assert cu_q is not None and cu_k is not None
+            batches = cu_q.shape[0] - 1
+            outs = []
+            for b in range(batches):
+                q_start = int(cu_q[b].item())
+                q_end = int(cu_q[b + 1].item())
+                k_start = int(cu_k[b].item())
+                k_end = int(cu_k[b + 1].item())
+                q_b = q[q_start:q_end].transpose(0, 1)
+                k_b = k[k_start:k_end].transpose(0, 1)
+                v_b = v[k_start:k_end].transpose(0, 1)
+                Lq = q_b.shape[1]
+                Lk = k_b.shape[1]
+                scores = torch.matmul(q_b, k_b.transpose(-2, -1)) * self.scale
+                if context.is_prefill:
+                    mask = torch.triu(torch.ones(Lq, Lk, device=q.device), diagonal=1).bool()
+                    scores.masked_fill_(mask, float("-inf"))
+                attn = torch.softmax(scores, dim=-1)
+                out = torch.matmul(attn, v_b).transpose(0, 1)
+                outs.append(out)
+            return torch.cat(outs, dim=0)
+        elif q.dim() == 4:
+            B, Lq, H, D = q.shape
+            Bk, Lk, Hk, Dk = k.shape
+            assert B == Bk and H == Hk and D == Dk
+            q_t = q.permute(0, 2, 1, 3)
+            k_t = k.permute(0, 2, 1, 3)
+            v_t = v.permute(0, 2, 1, 3)
+            scores = torch.matmul(q_t, k_t.transpose(-2, -1)) * self.scale
+            if context.is_prefill:
+                mask = torch.triu(torch.ones(Lq, Lk, device=q.device), diagonal=1).bool()
+                scores.masked_fill_(mask, float("-inf"))
+            attn = torch.softmax(scores, dim=-1)
+            out = torch.matmul(attn, v_t).permute(0, 2, 1, 3)
+            return out
+        else:
+            raise ValueError("Unsupported tensor rank for CPU attention")
     
     def forward(self, q: torch.Tensor, k: torch.Tensor, v: torch.Tensor):
         context = get_context()
@@ -147,8 +172,6 @@ class Attention(nn.Module):
         if can_use_flash:
             try:
                 if context.is_prefill:
-                    if context.block_tables is not None:  # prefix cache
-                        k, v = k_cache, v_cache
                     o = flash_attn_varlen_func(
                         q,
                         k,
@@ -173,7 +196,6 @@ class Attention(nn.Module):
                     )
                 return o
             except Exception as e:
-                # Fallback to CPU implementation if flash attention fails
                 print(f"Flash attention failed, falling back to CPU implementation: {e}")
                 return self._cpu_attention(q, k, v, context)
         else:

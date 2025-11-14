@@ -13,6 +13,7 @@ import os
 import subprocess
 import sys
 import time
+import argparse
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 
@@ -374,7 +375,11 @@ class DeploymentValidator:
 
 
 async def main():
-    """Main validation function."""
+    parser = argparse.ArgumentParser(description="nano-vLLM deployment validation")
+    parser.add_argument("--skip-docker", action="store_true", help="Skip Docker build test")
+    parser.add_argument("--models", type=str, default="Qwen/Qwen3-8B,meta-llama/Llama-2-7b-hf,mistralai/Mistral-7B-v0.1", help="Comma-separated list of models to validate")
+    args = parser.parse_args()
+
     logger.info("Starting nano-vLLM deployment validation...")
     
     validator = DeploymentValidator()
@@ -384,11 +389,7 @@ async def main():
     logger.info(f"Platform compatibility: {platform_results}")
     
     # Test model validation
-    test_models = [
-        "Qwen/Qwen3-8B",
-        "meta-llama/Llama-2-7b-hf",
-        "mistralai/Mistral-7B-v0.1"
-    ]
+    test_models = [m.strip() for m in args.models.split(",") if m.strip()]
     model_results = validator.test_model_validation(test_models)
     logger.info(f"Model validation: {model_results}")
     
@@ -403,7 +404,7 @@ async def main():
     validator.validation_results["attention_fallback"] = attention_results
     
     # Test Docker build (optional, can be slow)
-    if "--skip-docker" not in sys.argv:
+    if not args.skip_docker:
         docker_results = validator.test_docker_build()
         logger.info(f"Docker build: {docker_results}")
         validator.validation_results["docker_build"] = docker_results

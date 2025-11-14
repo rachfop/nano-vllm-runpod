@@ -1,1 +1,2 @@
-# Optional dependencies (currently none to ensure zero warnings during build)
+# Optional extras that improve performance / feature parity
+flash-attn>=2.5.7

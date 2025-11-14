@@ -1,0 +1,70 @@
+2025-11-14T19:16:15.776605630Z /usr/local/lib/python3.10/dist-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+2025-11-14T19:16:15.776697072Z   warnings.warn(
+2025-11-14T19:16:16.659681566Z Traceback (most recent call last):
+2025-11-14T19:16:16.659722067Z   File "/app/handler.py", line 6, in <module>
+2025-11-14T19:16:16.659728457Z     from nanovllm import LLM
+2025-11-14T19:16:16.659734087Z   File "/app/nanovllm/__init__.py", line 1, in <module>
+2025-11-14T19:16:16.659739558Z     from nanovllm.llm import LLM
+2025-11-14T19:16:16.659744778Z   File "/app/nanovllm/llm.py", line 1, in <module>
+2025-11-14T19:16:16.659749778Z     from nanovllm.engine.llm_engine import LLMEngine
+2025-11-14T19:16:16.659754768Z   File "/app/nanovllm/engine/llm_engine.py", line 12, in <module>
+2025-11-14T19:16:16.659760268Z     from nanovllm.engine.model_runner import ModelRunner
+2025-11-14T19:16:16.659765338Z   File "/app/nanovllm/engine/model_runner.py", line 9, in <module>
+2025-11-14T19:16:16.659770498Z     from nanovllm.models.qwen3 import Qwen3ForCausalLM
+2025-11-14T19:16:16.659775549Z ModuleNotFoundError: No module named 'nanovllm.models'
+2025-11-14T19:16:32.441257095Z /usr/local/lib/python3.10/dist-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+2025-11-14T19:16:32.441317507Z   warnings.warn(
+2025-11-14T19:16:33.323086979Z Traceback (most recent call last):
+2025-11-14T19:16:33.323125800Z   File "/app/handler.py", line 6, in <module>
+2025-11-14T19:16:33.323131440Z     from nanovllm import LLM
+2025-11-14T19:16:33.323136910Z   File "/app/nanovllm/__init__.py", line 1, in <module>
+2025-11-14T19:16:33.323142271Z     from nanovllm.llm import LLM
+2025-11-14T19:16:33.323147531Z   File "/app/nanovllm/llm.py", line 1, in <module>
+2025-11-14T19:16:33.323152621Z     from nanovllm.engine.llm_engine import LLMEngine
+2025-11-14T19:16:33.323157751Z   File "/app/nanovllm/engine/llm_engine.py", line 12, in <module>
+2025-11-14T19:16:33.323163291Z     from nanovllm.engine.model_runner import ModelRunner
+2025-11-14T19:16:33.323168351Z   File "/app/nanovllm/engine/model_runner.py", line 9, in <module>
+2025-11-14T19:16:33.323173431Z     from nanovllm.models.qwen3 import Qwen3ForCausalLM
+2025-11-14T19:16:33.323178602Z ModuleNotFoundError: No module named 'nanovllm.models'
+2025-11-14T19:16:49.189361493Z /usr/local/lib/python3.10/dist-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+2025-11-14T19:16:49.189420725Z   warnings.warn(
+2025-11-14T19:16:50.077311994Z Traceback (most recent call last):
+2025-11-14T19:16:50.077352965Z   File "/app/handler.py", line 6, in <module>
+2025-11-14T19:16:50.077358966Z     from nanovllm import LLM
+2025-11-14T19:16:50.077364676Z   File "/app/nanovllm/__init__.py", line 1, in <module>
+2025-11-14T19:16:50.077370296Z     from nanovllm.llm import LLM
+2025-11-14T19:16:50.077375516Z   File "/app/nanovllm/llm.py", line 1, in <module>
+2025-11-14T19:16:50.077380646Z     from nanovllm.engine.llm_engine import LLMEngine
+2025-11-14T19:16:50.077385656Z   File "/app/nanovllm/engine/llm_engine.py", line 12, in <module>
+2025-11-14T19:16:50.077391006Z     from nanovllm.engine.model_runner import ModelRunner
+2025-11-14T19:16:50.077396097Z   File "/app/nanovllm/engine/model_runner.py", line 9, in <module>
+2025-11-14T19:16:50.077401357Z     from nanovllm.models.qwen3 import Qwen3ForCausalLM
+2025-11-14T19:16:50.077406447Z ModuleNotFoundError: No module named 'nanovllm.models'
+2025-11-14T19:17:05.370180017Z /usr/local/lib/python3.10/dist-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+2025-11-14T19:17:05.370223878Z   warnings.warn(
+2025-11-14T19:17:06.260113469Z Traceback (most recent call last):
+2025-11-14T19:17:06.260152990Z   File "/app/handler.py", line 6, in <module>
+2025-11-14T19:17:06.260158760Z     from nanovllm import LLM
+2025-11-14T19:17:06.260164280Z   File "/app/nanovllm/__init__.py", line 1, in <module>
+2025-11-14T19:17:06.260199091Z     from nanovllm.llm import LLM
+2025-11-14T19:17:06.260205451Z   File "/app/nanovllm/llm.py", line 1, in <module>
+2025-11-14T19:17:06.260210671Z     from nanovllm.engine.llm_engine import LLMEngine
+2025-11-14T19:17:06.260215731Z   File "/app/nanovllm/engine/llm_engine.py", line 12, in <module>
+2025-11-14T19:17:06.260221311Z     from nanovllm.engine.model_runner import ModelRunner
+2025-11-14T19:17:06.260226572Z   File "/app/nanovllm/engine/model_runner.py", line 9, in <module>
+2025-11-14T19:17:06.260231742Z     from nanovllm.models.qwen3 import Qwen3ForCausalLM
+2025-11-14T19:17:06.260236832Z ModuleNotFoundError: No module named 'nanovllm.models'
+2025-11-14T19:17:21.960288221Z /usr/local/lib/python3.10/dist-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+2025-11-14T19:17:21.960342833Z   warnings.warn(
+2025-11-14T19:17:22.834601063Z Traceback (most recent call last):
+2025-11-14T19:17:22.834643564Z   File "/app/handler.py", line 6, in <module>
+2025-11-14T19:17:22.834647964Z     from nanovllm import LLM
+2025-11-14T19:17:22.834651874Z   File "/app/nanovllm/__init__.py", line 1, in <module>
+2025-11-14T19:17:22.834655944Z     from nanovllm.llm import LLM
+2025-11-14T19:17:22.834659324Z   File "/app/nanovllm/llm.py", line 1, in <module>
+2025-11-14T19:17:22.834662544Z     from nanovllm.engine.llm_engine import LLMEngine
+2025-11-14T19:17:22.834665604Z   File "/app/nanovllm/engine/llm_engine.py", line 12, in <module>
+2025-11-14T19:17:22.834669194Z     from nanovllm.engine.model_runner import ModelRunner
+2025-11-14T19:17:22.834672294Z   File "/app/nanovllm/engine/model_runner.py", line 9, in <module>
+2025-11-14T19:17:22.834675534Z     from nanovllm.models.qwen3 import Qwen3ForCausalLM
+2025-11-14T19:17:22.834678715Z ModuleNotFoundError: No module named 'nanovllm.models'

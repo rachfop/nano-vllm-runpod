@@ -1,4 +1,4 @@
-"""Public nano-vLLM API."""
+"""Public nano-vLLM interface."""
 
 from .llm import LLM
 from .sampling_params import SamplingParams

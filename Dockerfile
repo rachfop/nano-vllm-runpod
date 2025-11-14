@@ -31,8 +31,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --no-build-isolation --upgrade -r /app/builder/requirements-optional.txt
 
-# Copy project files needed for packaging
-COPY pyproject.toml README.md LICENSE /app/
+# Copy project files required for installation
+COPY README.md LICENSE pyproject.toml /app/
 COPY nanovllm /app/nanovllm
 COPY handler.py /app/handler.py
 
@@ -45,11 +45,10 @@ ENV MODEL_NAME=${MODEL_NAME}
 ENV BASE_PATH="/runpod-volume"
 ENV HF_HOME="${BASE_PATH}/huggingface-cache/hub"
 ENV HF_DATASETS_CACHE="${BASE_PATH}/huggingface-cache/datasets"
-ENV TRANSFORMERS_CACHE="${BASE_PATH}/huggingface-cache/transformers"
 ENV PYTHONPATH="/app"
 
 # Create cache directories
-RUN mkdir -p ${HF_HOME} ${HF_DATASETS_CACHE} ${TRANSFORMERS_CACHE}
+RUN mkdir -p ${HF_HOME} ${HF_DATASETS_CACHE}
 
 # Set up entry point
 CMD ["python3", "/app/handler.py"]

@@ -32,13 +32,10 @@ except ImportError:
         raise NotImplementedError(
             "flash_attn not available - install flash-attn for production use"
         )
-
     def flash_attn_with_kvcache(*args, **kwargs):
         raise NotImplementedError(
             "flash_attn not available - install flash-attn for production use"
         )
-
-
 from ..utils import get_context
 
 

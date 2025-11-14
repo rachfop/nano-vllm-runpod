@@ -1,4 +1,4 @@
-"""Thin wrapper that exposes :class:`LLMEngine` with a friendlier name."""
+"""Convenience wrapper around :class:`LLMEngine`."""
 
 from .engine import LLMEngine
 

@@ -37,7 +37,7 @@ class ModelRunner:
             msg = f"Model '{config.model}' (type='{model_type}') is not supported by nano-vllm."
             raise ValueError(msg) from exc
         self.model = model_cls(hf_config)
-        load_model(self.model, config.model)
+        load_model(self.model, config.model_path)
         self.sampler = Sampler()
         self.warmup_model()
         self.allocate_kv_cache()

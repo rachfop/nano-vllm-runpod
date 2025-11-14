@@ -21,15 +21,14 @@ COPY builder/requirements-core.txt /app/builder/requirements-core.txt
 COPY builder/requirements.txt /app/builder/requirements.txt
 COPY builder/requirements-optional.txt /app/builder/requirements-optional.txt
 RUN --mount=type=cache,target=/root/.cache/pip \
-    python3 -m pip install --upgrade pip && \
-    python3 -m pip install --upgrade -r /app/builder/requirements-core.txt
+    python3 -m pip install --upgrade pip --root-user-action=ignore && \
+    python3 -m pip install --upgrade -r /app/builder/requirements-core.txt --root-user-action=ignore
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-    python3 -m pip install --no-build-isolation --upgrade -r /app/builder/requirements.txt
+    python3 -m pip install --no-build-isolation --upgrade -r /app/builder/requirements.txt --root-user-action=ignore
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-    python3 -m pip install --no-build-isolation --upgrade -r /app/builder/requirements-optional.txt \
-    || echo "Warning: optional dependencies failed to install; continuing without them."
+    python3 -m pip install --no-build-isolation --upgrade -r /app/builder/requirements-optional.txt --root-user-action=ignore
 
 # Copy project files
 COPY pyproject.toml /app/pyproject.toml
@@ -37,7 +36,7 @@ COPY nanovllm /app/nanovllm
 COPY handler.py /app/handler.py
 
 # Install nano-vllm in development mode
-RUN pip install -e .
+RUN pip install --root-user-action=ignore -e .
 
 # Set environment variables
 ARG MODEL_NAME="Qwen/Qwen3-8B"

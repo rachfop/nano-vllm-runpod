@@ -9,7 +9,7 @@
   "config": {
     "runsOn": "GPU",
     "containerDiskInGb": 50,
-    "gpuIds": "ADA_80_PRO, AMPERE_80, AMPERE_48, ADA_80_PRO, BLACKWELL_180, HOPPER_141, BLACKWELL_96, AMPERE_80, ADA_48_PRO, AMPERE_48, ADA_24, ADA_32_PRO",
+    "gpuIds": "ADA_80_PRO,AMPERE_80,AMPERE_48,ADA_80_PRO,BLACKWELL_180,HOPPER_141,BLACKWELL_96,AMPERE_80,ADA_48_PRO,AMPERE_48,ADA_24,ADA_32_PRO",
     "gpuCount": 1,
     "allowedCudaVersions": [
       "12.1",

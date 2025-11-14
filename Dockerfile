@@ -31,13 +31,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --no-build-isolation --upgrade -r /app/builder/requirements-optional.txt
 
-# Copy project files
-COPY pyproject.toml /app/pyproject.toml
+# Copy project files needed for packaging
+COPY pyproject.toml README.md LICENSE /app/
 COPY nanovllm /app/nanovllm
 COPY handler.py /app/handler.py
 
 # Install nano-vllm in development mode
-RUN pip install -e .
+RUN python3 -m pip install -e .
 
 # Set environment variables
 ARG MODEL_NAME="Qwen/Qwen3-8B"

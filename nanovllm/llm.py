@@ -1,4 +1,6 @@
-from nanovllm.engine.llm_engine import LLMEngine
+"""Thin wrapper that exposes :class:`LLMEngine` with a friendlier name."""
+
+from .engine import LLMEngine
 
 
 class LLM(LLMEngine):

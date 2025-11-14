@@ -46,7 +46,7 @@ python test_config.py
 
 ## 📊 Performance
 
-- **Model Support**: Qwen3, and other compatible models
+- **Model Support**: Any architecture registered in `nanovllm.models` (Qwen3 included). Implementations just need to call `register_model(<hf model_type>)` to be picked up automatically.
 - **GPU Requirements**: 16GB+ VRAM recommended
 - **Throughput**: Configurable via environment variables
 - **Latency**: Optimized for serverless cold starts

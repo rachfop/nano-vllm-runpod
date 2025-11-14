@@ -132,7 +132,8 @@ dmypy.json
 *.pth
 
 # Model files and caches
-models/
+/models/
+!/nanovllm/models/
 cache/
 huggingface-cache/
 *.bin

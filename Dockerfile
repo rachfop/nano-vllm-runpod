@@ -16,6 +16,7 @@ WORKDIR /app
 ENV CUDA_HOME=/usr/local/cuda-12.1
 ENV PATH=${CUDA_HOME}/bin:${PATH}
 ENV PIP_ROOT_USER_ACTION=ignore
+ENV PIP_PREFER_BINARY=1
 
 # Install Python dependencies first (for better caching)
 COPY builder/requirements-core.txt /app/builder/requirements-core.txt
